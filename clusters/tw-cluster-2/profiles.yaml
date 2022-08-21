@@ -46,7 +46,7 @@ status: {}
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: policy-agent-profile
+  name: policy-agent-profile-2
   namespace: default
 spec:
   interval: 1m
