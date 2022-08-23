@@ -66,7 +66,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: policy-agent-profile
-        namespace: default
+        namespace: policy-system
       valuesFiles:
       - ./charts/weave-policy-agent/values.yaml
       interval: 1m
