@@ -46,7 +46,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: policy-agent-profile
-  namespace: default
+  namespace: policy-system
 spec:
   interval: 1m
   url: https://github.com/weaveworks/profiles-catalog
@@ -57,7 +57,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: policy-agent-profile
-  namespace: default
+  namespace: policy-system
 spec:
   interval: 1m
   chart:
