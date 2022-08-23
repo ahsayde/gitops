@@ -53,22 +53,24 @@ spec:
   ref:
     branch: add-policy-set
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: policy-agent
-  namespace: policy-system
-  labels:
-    weave.works/applied-layer: layer-1
-spec:
-  interval: 1m
-  chart:
-    spec:
-      chart: ./charts/weave-policy-agent
-      sourceRef:
-        kind: GitRepository
-        name: policy-agent
-        namespace: policy-system
-      valuesFiles:
-      - ./charts/weave-policy-agent/values.yaml
-      interval: 1m
+# apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# kind: HelmRelease
+# metadata:
+#   name: policy-agent
+#   namespace: policy-system
+#   labels:
+#     weave.works/applied-layer: layer-1
+# spec:
+#   dependsOn:
+#   - name: cert-manager
+#   interval: 1m
+#   chart:
+#     spec:
+#       chart: ./charts/weave-policy-agent
+#       sourceRef:
+#         kind: GitRepository
+#         name: policy-agent
+#         namespace: policy-system
+#       valuesFiles:
+#       - ./charts/weave-policy-agent/values.yaml
+#       interval: 1m
