@@ -68,10 +68,11 @@ spec:
   interval: 1m
   values:
     policy-agent:
-      audit:
-        policySet: audit-policy-set
-      admission:
-        policySet: admission-policy-set
+      config:
+        audit:
+          policySet: audit-policy-set
+        admission:
+          policySet: admission-policy-set
     auditPolicySet:
       severities:
       - low
