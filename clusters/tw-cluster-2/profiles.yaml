@@ -85,14 +85,13 @@ spec:
               enabled: true
             filesystemSink:
               fileName: admission.json
-        
-        auditPolicySet:
-          severities:
-          - high
-          - low
-        admissionPolicySet:
-          severities:
-          - high
+    auditPolicySet:
+      severities:
+      - high
+      - low
+    admissionPolicySet:
+      severities:
+      - high
     policySource:
       enabled: true
       url: ssh://git@github.com/weaveworks/policy-library
