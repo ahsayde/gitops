@@ -51,7 +51,7 @@ spec:
   interval: 1m
   url: https://github.com/weaveworks/profiles-catalog
   ref:
-    branch: main
+    branch: v0.4.0
 
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
@@ -67,10 +67,36 @@ spec:
     namespace: flux-system
   interval: 1m
   values:
+    policy-agent:
+      config:
+        accountId: my-account
+        clusterId: my-cluster
+        audit:
+          enabled: true
+          policySet: audit-policy-set
+          sinks:
+            filesystemSink:
+              fileName: audit.json
+        admission:
+          enabled: true
+          policySet: admission-policy-set
+          sinks:
+            k8sEventsSink:
+              enabled: true
+            filesystemSink:
+              fileName: admission.json
+        
+        auditPolicySet:
+          severities:
+          - high
+          - low
+        admissionPolicySet:
+          severities:
+          - high
     policySource:
       enabled: true
       url: ssh://git@github.com/MagalixTechnologies/policy-library
-      tag: v0.4.0
+      tag: v1.0.0
       path: ./
       secretRef: ssh-credentials
   chart:
