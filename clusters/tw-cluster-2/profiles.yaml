@@ -85,6 +85,13 @@ spec:
               enabled: true
             filesystemSink:
               fileName: admission.json
+    policySource:
+      enabled: true
+      url: ssh://git@github.com/weaveworks/policy-library
+      tag: v1.0.0
+      path: ./
+      secretRef: ssh-credentials
+
     auditPolicySet:
       severities:
       - high
@@ -92,12 +99,7 @@ spec:
     admissionPolicySet:
       severities:
       - high
-    policySource:
-      enabled: true
-      url: ssh://git@github.com/weaveworks/policy-library
-      tag: v1.0.0
-      path: ./
-      secretRef: ssh-credentials
+  
   chart:
     spec:
       chart: ./charts/weave-policy-agent
