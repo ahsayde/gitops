@@ -67,18 +67,6 @@ spec:
     namespace: flux-system
   interval: 1m
   values:
-    policy-agent:
-      config:
-        audit:
-          policySet: audit-policy-set
-        admission:
-          policySet: admission-policy-set
-    auditPolicySet:
-      severities:
-      - low
-    admissionPolicySet:
-      severities:
-      - high
     policySource:
       enabled: true
       url: ssh://git@github.com/MagalixTechnologies/policy-library
