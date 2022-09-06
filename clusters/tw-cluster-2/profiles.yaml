@@ -66,19 +66,19 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    admissionPolicySet:
-      severities:
-      - high
-    auditPolicySet:
-      severities:
-      - high
-      - low
+    # admissionPolicySet:
+    #   severities:
+    #   - high
+    # auditPolicySet:
+    #   severities:
+    #   - high
+    #   - low
     policy-agent:
       config:
         accountId: my-account
         admission:
           enabled: true
-          policySet: admission-policy-set
+          # policySet: admission-policy-set
           sinks:
             filesystemSink:
               fileName: admission.json
@@ -86,17 +86,17 @@ spec:
               enabled: true
         audit:
           enabled: true
-          policySet: audit-policy-set
+          # policySet: audit-policy-set
           sinks:
             filesystemSink:
               fileName: audit.json
         clusterId: my-cluster
-    policySource:
-      enabled: true
-      path: ./
-      secretRef: ssh-credentials
-      tag: v1.0.0
-      url: ssh://git@github.com/weaveworks/policy-library
+    # policySource:
+    #   enabled: true
+    #   path: ./
+    #   secretRef: ssh-credentials
+    #   tag: v1.0.0
+    #   url: ssh://git@github.com/weaveworks/policy-library
 status: {}
 
 
