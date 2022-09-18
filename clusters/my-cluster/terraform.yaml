@@ -10,3 +10,10 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  webhooks:
+  - stage: post-planning
+    url: https://abc.xyz/
+    enabled: true
+    payloadType: "SpecAndPlan"
+    testExpression: "{{ .passed }}"
+    errorMessageTemplate: "Message: {{ .message }}"
