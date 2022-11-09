@@ -93,7 +93,10 @@ spec:
               fileName: admission.json
     policySource:
       enabled: true
-      sourceName: flux-system
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
       path: ./policies
   chart:
     spec:
