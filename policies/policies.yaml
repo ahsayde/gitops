@@ -1,4 +1,4 @@
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-running-with-privilege-escalation
@@ -108,7 +108,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.container-block-sysctl.cve-2022-0811
@@ -197,7 +197,7 @@ spec:
     	controller_input.kind == "CronJob"
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.container-block-sysctl
@@ -279,7 +279,7 @@ spec:
     	controller_input.kind == "CronJob"
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-running-with-unapproved-linux-capabilities
@@ -334,7 +334,7 @@ spec:
       value:
   code: "package weave.advisor.podSecurity.capabilities\n\nexclude_namespace := input.parameters.exclude_namespace\nexclude_label_key := input.parameters.exclude_label_key\nexclude_label_value := input.parameters.exclude_label_value\n\nviolation[result] {\n  isExcludedNamespace == false\n  not exclude_namespace == controller_input.metadata.namespace\n  not exclude_label_value == controller_input.metadata.labels[exclude_label_key]\n  isViolatingTheCapabilities\n  result = {\n    \"issue detected\": true,\n    \"msg\": \"Running unapproved capabilities\",\n    \"violating_key\": \"spec.template.spec.containers.securityContext.capabilities\"  \n  }\n}\n\nisExcludedNamespace  = true {\n\tinput.review.object.metadata.namespace == exclude_namespace\n}else = false {true}\n\n\nis_array_contains(array,str) {\n  array[_] = str\n}\n\ndangerousCap := {\"SYS_ADMIN\",\"NEW_RAW\",\"NET_ADMIN\",\"ALL\"}\n\nisViolatingTheCapabilities = true {\n\tcontainer := controller_spec.containers[_]\n    cap := container.securityContext.capabilities.add[_]\n    is_array_contains(dangerousCap,cap)\n\n}else = true{\n    cap := controller_spec.securityContext.capabilities.add[_]\n    is_array_contains(dangerousCap,cap)\n    container := controller_spec.containers[_]\n    not  container.securityContext.capabilities\n\n\n}else = true{\n    cap := controller_spec.securityContext.capabilities.add[_]\n    is_array_contains(dangerousCap,cap)\n    container := controller_spec.containers[_]\n    not  count(container.securityContext.capabilities.add) >=0\n}\n\n# Controller input\ncontroller_input = input.review.object\n\n# controller_container acts as an iterator to get containers from the template\ncontroller_spec = controller_input.spec.template.spec {\n  contains_kind(controller_input.kind, {\"StatefulSet\" , \"DaemonSet\", \"Deployment\", \"Job\"})\n} else = controller_input.spec {\n  controller_input.kind == \"Pod\"\n} else = controller_input.spec.jobTemplate.spec.template.spec {\n  controller_input.kind == \"CronJob\"\n}\n\ncontains_kind(kind, kinds) {\n  kinds[_] = kind\n}\n"
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.container-running-as-root
@@ -459,7 +459,7 @@ spec:
     	kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.container-running-as-user
@@ -587,7 +587,7 @@ spec:
     	kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-running-in-privileged-mode
@@ -693,7 +693,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.controller-serviceaccount-tokens-automount
@@ -798,7 +798,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.container-prohibit-image-tag
@@ -915,7 +915,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-missing-security-context
@@ -999,7 +999,7 @@ spec:
     	kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-should-not-run-in-namespace
@@ -1059,7 +1059,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-not-using-runtime-default-seccomp-profile
@@ -1106,7 +1106,7 @@ spec:
       value:
   code: "package weave.advisor.podSecurity.seccomp_runtime_default\n\nseccomp_annotation := input.parameters.seccomp_annotation\nseccomp_type := input.parameters.seccomp_type\nexclude_namespace := input.parameters.exclude_namespace\nexclude_label_key := input.parameters.exclude_label_key\nexclude_label_value := input.parameters.exclude_label_value\n\nviolation[result] {\n  not exclude_namespace == controller_input.metadata.namespace\n  not exclude_label_value == controller_input.metadata.labels[exclude_label_key]\n  annotation := input.review.object.metadata.annotations[\"seccomp.security.alpha.kubernetes.io/pod\"]\n  not annotation == seccomp_annotation\n  result = {\n    \"issue detected\": true,\n    \"msg\": sprintf(\"The value of the annotation must be '%v'; found '%v'\",[seccomp_annotation, annotation]),\n    \"violating_key\": \"spec.metadata.annotations\"  \n  }\n}\n\n# Pods\nviolation[result] {\n  not exclude_namespace == controller_input.metadata.namespace\n  not exclude_label_value == controller_input.metadata.labels[exclude_label_key]\n  type := controller_spec.securityContext.seccompProfile.type\n  not type == seccomp_type\n  result = {\n    \"issue detected\": true,\n    \"msg\": sprintf(\"The secompProfile type must be '%v'; found '%v'\",[seccomp_type, type]),\n    \"violating_key\": \"spec.template.spec.securityContext.seccompProfile.type\"  \n  }\n}\n\n# Non Pods - \"StatefulSet\" , \"DaemonSet\", \"Deployment\", \"Job\"\nviolation[result] {\n  not exclude_namespace == controller_input.metadata.namespace\n  not exclude_label_value == controller_input.metadata.labels[exclude_label_key]\n  type := controller_spec.template.spec.securityContext.seccompProfile.type\n  not type == seccomp_type\n  result = {\n    \"issue detected\": true,\n    \"msg\": sprintf(\"The secompProfile type must be '%v'; found '%v'\",[seccomp_type, type]),\n    \"violating_key\": \"spec.template.spec.securityContext.seccompProfile.type\"  \n  }\n}\n\n# CronJobs\nviolation[result] {\n  not exclude_namespace == controller_input.metadata.namespace\n  not exclude_label_value == controller_input.metadata.labels[exclude_label_key]\n  type := controller_input.spec.jobTemplate.spec.template.spec.securityContext.seccompProfile.type\n  not type == seccomp_type\n  result = {\n    \"issue detected\": true,\n    \"msg\": sprintf(\"The secompProfile type must be '%v'; found '%v'\",[seccomp_type, type]),\n    \"violating_key\": \"spec.jobTemplate.spec.template.spec.securityContext.seccompProfile.type\"  \n  }\n}\n\n# Controller input\ncontroller_input = input.review.object\n\n# controller_container acts as an iterator to get containers from the template\ncontroller_spec = controller_input.spec.template.spec {\n  contains_kind(controller_input.kind, {\"StatefulSet\" , \"DaemonSet\", \"Deployment\", \"Job\"})\n} else = controller_input.spec {\n  controller_input.kind == \"Pod\"\n} else = controller_input.spec.jobTemplate.spec.template.spec {\n  controller_input.kind == \"CronJob\"\n}\n\ncontains_kind(kind, kinds) {\n  kinds[_] = kind\n}\n"
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-sharing-host-ipc
@@ -1201,7 +1201,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-sharing-host-network
@@ -1296,7 +1296,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-sharing-host-pid
@@ -1391,7 +1391,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.containers-sharing-process-namespace
@@ -1486,7 +1486,7 @@ spec:
       kinds[_] = kind
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.prohibit-naked-pods-from-being-scheduled
@@ -1526,7 +1526,7 @@ spec:
       }
     }
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.rbac-protect-cluster-admin-clusterrolebindings
@@ -1581,7 +1581,7 @@ spec:
       value:
   code: "package weave.advisor.rbac.enforce_cluster_admin_default_group\n\nsubjects_kind := input.parameters.subjects_kind\nsubjects_name := input.parameters.subjects_name\nexclude_label_key := input.parameters.exclude_label_key\nexclude_label_value := input.parameters.exclude_label_value\n\nviolation[result] {\n  not exclude_label_value == crb_input.metadata.labels[exclude_label_key]\n  crb_input.metadata.name == \"cluster-admin\"\n  some i\n  subjects := crb_input.subjects[i]\n  not subjects.kind == subjects_kind\n  result = {\n  \t\"issue detected\": true,\n    \"msg\": sprintf(\"expected kind '%v'; found '%v'\",[subjects_kind, subjects.name]),\n    \"violating_key\": sprintf(\"subjects[%v]\", [i])\n  }\n}\n\nviolation[result] {  \n  not exclude_label_value == crb_input.metadata.labels[exclude_label_key]\n  crb_input.metadata.name == \"cluster-admin\"\n  some i\n  subjects := crb_input.subjects[i]\n  not subjects.name == subjects_name\n  result = {\n    \"issue detected\": true,\n    \"msg\": sprintf(\"expected name '%v'; found '%v'\",[subjects_name, subjects.name]),\n    \"violating_key\": sprintf(\"subjects[%v].name\", [i])\n  }\n}\n\ncrb_input = input.review.object {\n\tcontains_kind(input.review.object.kind, {\"ClusterRoleBinding\"})\n} \n\ncontains_kind(kind, kinds) {\n  kinds[_] = kind\n}\n"
 ---
-apiVersion: pac.weave.works/v2beta1
+apiVersion: pac.weave.works/v2beta2
 kind: Policy
 metadata:
   name: weave.policies.disable-service-account-token-automount-in-specific-namespace
