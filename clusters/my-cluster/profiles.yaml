@@ -46,19 +46,19 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: policy-agent
-  namespace: policy-system
+  namespace: flux-system
 spec:
   interval: 1m
   url: https://github.com/weaveworks/profiles-catalog
   ref:
-    branch: weave-policy-agent-0.6.3
+    tag: weave-policy-agent-0.6.3
 
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: policy-agent
-  namespace: policy-system
+  namespace: flux-system
   labels:
     weave.works/applied-layer: layer-1
 spec:
@@ -99,7 +99,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: policy-agent
-        namespace: policy-system
+        namespace: flux-system
       valuesFiles:
       - ./charts/weave-policy-agent/values.yaml
       interval: 1m
