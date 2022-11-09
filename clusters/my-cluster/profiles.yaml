@@ -51,7 +51,8 @@ metadata:
 spec:
   url: https://github.com/weaveworks/profiles-catalog/
   ref:
-    branch: bump-policy-agent-to-v2
+    tag: weave-policy-agent-0.6.3
+    # branch: bump-policy-agent-to-v2
   interval: 1m
 
 
@@ -83,7 +84,7 @@ spec:
           enabled: true
           sinks:
             filesystemSink:
-              fileName: audit2.json
+              fileName: audit.json
         admission:
           enabled: true
           sinks:
