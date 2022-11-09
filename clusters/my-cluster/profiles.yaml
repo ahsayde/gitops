@@ -83,7 +83,7 @@ spec:
           enabled: true
           sinks:
             filesystemSink:
-              fileName: audit.json
+              fileName: audit2.json
         admission:
           enabled: true
           sinks:
