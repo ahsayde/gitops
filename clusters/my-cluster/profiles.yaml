@@ -51,7 +51,7 @@ spec:
   interval: 1m
   url: https://github.com/weaveworks/profiles-catalog
   ref:
-    branch: 1507-gitsources
+    branch: weave-policy-agent-0.6.3
 
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
@@ -65,7 +65,13 @@ spec:
   dependsOn:
   - name: cert-manager
     namespace: flux-system
-  interval: 1m
+  interval: 1m0s
+  targetNamespace: policy-system
+  install:
+    crds: CreateReplace
+    createNamespace: true
+  upgrade:
+    crds: CreateReplace
   values:
     policy-agent:
       config:
