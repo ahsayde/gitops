@@ -49,7 +49,7 @@ metadata:
   name: policy-agent
   namespace: flux-system
 spec:
-  url: https://github.com/weaveworks/profiles-catalog
+  url: https://github.com/weaveworks/profiles-catalog/
   ref:
     tag: weave-policy-agent-0.6.3
   interval: 1m
