@@ -51,8 +51,8 @@ metadata:
 spec:
   url: https://github.com/weaveworks/profiles-catalog/
   ref:
-    tag: weave-policy-agent-0.6.3
-    # branch: bump-policy-agent-to-v2
+    # tag: weave-policy-agent-0.6.3
+    branch: bump-policy-agent-to-v2
   interval: 1m
 
 
