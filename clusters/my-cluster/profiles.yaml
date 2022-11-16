@@ -49,10 +49,9 @@ metadata:
   name: policy-agent
   namespace: flux-system
 spec:
-  url: https://github.com/weaveworks/profiles-catalog/
+  url: https://github.com/weaveworks/weave-gitops-profile-examples
   ref:
-    # tag: weave-policy-agent-0.6.3
-    branch: bump-policy-agent-to-v2
+    branch: bump-policy-agent-v2
   interval: 1m
 
 
