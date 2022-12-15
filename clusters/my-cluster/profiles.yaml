@@ -32,7 +32,8 @@ spec:
     secretStores:
       enabled: true
       url: ssh://git@github.com/ahsayde/ext-sercret-op
-      branch: main                                  
+      branch: main
+      tag: ""                           
       path: ./clusters/secrets/management                                    
       secretRef: ssh-creds                            
   chart:
