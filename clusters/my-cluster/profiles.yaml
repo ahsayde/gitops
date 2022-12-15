@@ -42,7 +42,7 @@ spec:
         apiVersion: source.toolkit.fluxcd.io/v1beta1
         kind: GitRepository
         name: external-secrets
-        namespace: flux-system
+        namespace: external-secret
       valuesFiles:
       - ./charts/external-secrets/values.yaml
       interval: 1m
