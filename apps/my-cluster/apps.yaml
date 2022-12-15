@@ -1,46 +1,46 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
-metadata:
-  name: my-apps
-  namespace: flux-system
-spec:
-  interval: 1m
-  url: https://github.com/ahsayde/gitops-apps
-  ref:
-    branch: main
----
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: app-a
-  namespace: default
-spec:
-  interval: 1m
-  chart:
-    spec:
-      chart: ./my-service-1/helm
-      sourceRef:
-        kind: GitRepository
-        name: my-apps
-        namespace: flux-system
-      valuesFiles:
-      - ./my-service-1/helm/values.yaml
-      interval: 1m
----
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: app-b
-  namespace: default
-spec:
-  interval: 1m
-  chart:
-    spec:
-      chart: ./my-service-2/helm
-      sourceRef:
-        kind: GitRepository
-        name: my-apps
-        namespace: flux-system
-      valuesFiles:
-      - ./my-service-2/helm/values.yaml
-      interval: 1m
+# apiVersion: source.toolkit.fluxcd.io/v1beta1
+# kind: GitRepository
+# metadata:
+#   name: my-apps
+#   namespace: flux-system
+# spec:
+#   interval: 1m
+#   url: https://github.com/ahsayde/gitops-apps
+#   ref:
+#     branch: main
+# ---
+# apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# kind: HelmRelease
+# metadata:
+#   name: app-a
+#   namespace: default
+# spec:
+#   interval: 1m
+#   chart:
+#     spec:
+#       chart: ./my-service-1/helm
+#       sourceRef:
+#         kind: GitRepository
+#         name: my-apps
+#         namespace: flux-system
+#       valuesFiles:
+#       - ./my-service-1/helm/values.yaml
+#       interval: 1m
+# ---
+# apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# kind: HelmRelease
+# metadata:
+#   name: app-b
+#   namespace: default
+# spec:
+#   interval: 1m
+#   chart:
+#     spec:
+#       chart: ./my-service-2/helm
+#       sourceRef:
+#         kind: GitRepository
+#         name: my-apps
+#         namespace: flux-system
+#       valuesFiles:
+#       - ./my-service-2/helm/values.yaml
+#       interval: 1m
