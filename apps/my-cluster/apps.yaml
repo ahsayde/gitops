@@ -14,7 +14,8 @@ kind: HelmRelease
 metadata:
   name: app-a
   namespace: default
-  weave.works/applied-layer: layer-2
+  labels:
+    weave.works/applied-layer: layer-2
 spec:
   interval: 1m
   chart:
@@ -33,7 +34,8 @@ kind: HelmRelease
 metadata:
   name: app-b
   namespace: default
-  weave.works/applied-layer: layer-2
+  labels:
+    weave.works/applied-layer: layer-2
 spec:
   interval: 1m
   chart:
