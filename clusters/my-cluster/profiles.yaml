@@ -51,7 +51,7 @@ metadata:
 spec:
   url: https://github.com/weaveworks/weave-gitops-profile-examples
   ref:
-    branch: bump-policy-agent-v2
+    branch: bump-policy-agent-v2.2.0
   interval: 1m
 
 
@@ -86,6 +86,7 @@ spec:
               fileName: audit.json
         admission:
           enabled: true
+          mutate: true
           sinks:
             k8sEventsSink:
               enabled: true
